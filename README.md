@@ -5,6 +5,8 @@
 
 ### Windows To Linux
 
+#### Send file from remote client to host machine:
+
 ##### If you want to send the raw contents:
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
