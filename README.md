@@ -235,7 +235,7 @@ $FilePath = "$pwd\file.ext"; $LPort = %ListeningPort%; $Listener = [System.Net.S
 
 ###### If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows client run the following in PowerShell:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows host run the following in PowerShell:
 
 ```
 $FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $File = [System.IO.File]::OpenWrite("$FilePath"); $Buffer = New-Object byte[] 1024; while ($true) { $BytesRead = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($BytesRead -eq 0) { break }; $File.Write($Buffer, 0, $BytesRead) }; $File.Close(); $NetworkStream.Close(); $TCPClient.Close()
@@ -252,7 +252,7 @@ $FilePath = "$pwd\file.ext"; $LPort = %ListeningPort%; $Base64String = [System.C
 
 ###### If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows client run the following in PowerShell:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows host run the following in PowerShell:
 
 ```
 $FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $Buffer = New-Object byte[] 1024; while ($true) { $BytesRead = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($BytesRead -eq 0) { break }; $Data = [System.Text.Encoding]::ASCII.GetString($Buffer, 0, $BytesRead); $Contents = $Contents + $Data }; $Base64String = [Convert]::FromBase64String($Contents); [IO.File]::WriteAllBytes("$FilePath", $Base64String); $NetworkStream.Close(); $TCPClient.Close()
