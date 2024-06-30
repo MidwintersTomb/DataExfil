@@ -230,7 +230,7 @@ $FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPo
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a PowerShell listener on the *remote* Windows client:
 
 ```
-$FilePath = "$pwd\file.ext"; $LPort = %ListeningPort%; $Listener = [System.Net.Sockets.TcpListener]::Create($LPORT); $Listener.Start(); $TCPClient = $Listener.AcceptTcpClient(); $NetworkStream = $TCPClient.GetStream(); $FileContents = [System.IO.File]::ReadAllBytes($FilePath); $NetworkStream.Write($FileContents, 0, $FileContents.Length); $NetworkStream.Close(); $TCPClient.Close(); $Listener.Stop()
+$FilePath = "$pwd\file.ext"; $LPort = %ListeningPort%; $Listener = [System.Net.Sockets.TcpListener]::Create($LPort); $Listener.Start(); $TCPClient = $Listener.AcceptTcpClient(); $NetworkStream = $TCPClient.GetStream(); $FileContents = [System.IO.File]::ReadAllBytes($FilePath); $NetworkStream.Write($FileContents, 0, $FileContents.Length); $NetworkStream.Close(); $TCPClient.Close(); $Listener.Stop()
 ```
 
 ###### If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
@@ -255,7 +255,7 @@ $FilePath = "$pwd\file.ext"; $LPort = %ListeningPort%; $Base64String = [System.C
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows client run the following in PowerShell:
 
 ```
-
+$FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $Buffer = New-Object byte[] 1024; while ($true) { $BytesRead = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($BytesRead -eq 0) { break }; $Data = [System.Text.Encoding]::ASCII.GetString($Buffer, 0, $BytesRead); $Contents = $Contents + $Data }; $Base64String = [Convert]::FromBase64String($Contents); [IO.File]::WriteAllBytes("$FilePath", $Base64String); $NetworkStream.Close(); $TCPClient.Close()
 ```
 
 ###### If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
