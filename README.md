@@ -1,5 +1,5 @@
 # Data Exfiltration Techniques
-#### This is a list of some data exfiltration techniques if you don't have access to SCP, FTP, SMB, etc.
+#### This is a list of some data exfiltration techniques if you don't have access to SCP, FTP, SMB, etc. for some reason, are avoiding using them due to triggering certain detections, or just because you're feeling saucy.  I'm sure these can probably be made more efficient, but they were developed as part of a.) getting better at PowerShell, and b.) just to see if I could.
 
 ***
 
