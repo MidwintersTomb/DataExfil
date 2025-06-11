@@ -460,17 +460,23 @@ mkfifo %pipename%
 nc -lp %port1% < %pipename% | nc -lp %port2% > %pipename%
 ```
 
-- East machine connects
+East Machine:
+
+- Connect to proxying machine
 
 ```
 nc %proxyip% %port1%
 ```
 
-- West machine connects
+West Machine:
+
+- Connect to proxying machine
 
 ```
 nc %proxyip% %port2%
 ```
+
+Proxying Machine:
 
 - Delete named pipe when done
 
